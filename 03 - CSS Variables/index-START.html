@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Scoped CSS Variables and JS</title>
 </head>
+
 <body>
   <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
 
@@ -21,10 +23,24 @@
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
-
     /*
       misc styles, nothing to do with CSS variables
     */
+    :root {
+      --spacing: 10px;
+      --blur: 0.1px;
+      --baseColor: rgb(15, 184, 43);
+    }
+
+    img {
+      filter: blur(var(--blur));
+      padding: var(--spacing);
+      background: var(--baseColor);
+    }
+
+    .hl {
+      color: var(--baseColor);
+    }
 
     body {
       text-align: center;
@@ -45,7 +61,32 @@
   </style>
 
   <script>
+    const root = document.querySelector(":root");
+    const spacingInput = document.getElementById("spacing");
+    const blurInput = document.getElementById("blur");
+    const baseInput = document.getElementById("base");
+
+    function updateVariableChanges(e) {
+      console.log(this.value);
+      if (this.id === "spacing") {
+        root.style.setProperty("--spacing", this.value + "px");
+      } else if (this.id === "blur") {
+        root.style.setProperty("--blur", this.value + "px");
+      } else if (this.id === "base") {
+        root.style.setProperty("--baseColor", this.value);
+      } else {
+        console.error("Unknown element");
+        console.log(this);
+      }
+    }
+    // spacingInput.addEventListener("mousemove", handleSpacingChange);
+    spacingInput.addEventListener("change", updateVariableChanges);
+    blurInput.addEventListener("change", updateVariableChanges);
+    baseInput.addEventListener("mousemove", updateVariableChanges);
+    baseInput.addEventListener("change", updateVariableChanges);
+
   </script>
 
 </body>
+
 </html>
