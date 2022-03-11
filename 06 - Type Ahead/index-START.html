@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Type Ahead 👀</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <form class="search-form">
@@ -14,9 +16,72 @@
       <li>or a state</li>
     </ul>
   </form>
-<script>
-const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
 
-</script>
+  <script>
+    // Holds setTimeout object to delay handling of keyup transition
+    var timeout = null;
+    // 0.5s delay before we show results
+    const delay = 500;
+
+    // Populate list items for the suggestions in this UL
+    const suggestionsUL = document.querySelector(".suggestions");
+    // Get input word
+    const inputSearch = document.querySelector(".search");
+
+    // utility function
+    function numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    // Populate the array of cities from the endpoint
+    const cities = [];
+
+    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+    fetch(endpoint)
+      .then(data => data.json())
+      .then(data => cities.push(...data));
+
+    // console.log(cities);
+
+    function displayMatchedCities(cities, inputWord) {
+      console.table(`Matched Cities:`);
+      console.table(cities);
+      const inputWordRegex = new RegExp(`${inputWord}`, "gi");
+      var citiesLI = cities.map(place => {
+
+        const cityNameHTML = place.city.replace(inputWordRegex, `<span class="hl">${inputWord}</span>`);
+        const stateNameHTML = place.state.replace(inputWordRegex, `<span class="hl">${inputWord}</span>`);
+
+        return `
+        <li>
+          <span class="name">${cityNameHTML}, ${stateNameHTML}</span>
+          <span class="population"> ${numberWithCommas(place.population)} </span>
+        </li>`;
+      }).join("\n");
+
+      console.log("citiesLI=");
+      console.table(citiesLI);
+
+      suggestionsUL.innerHTML = citiesLI;
+    }
+
+    function handleInputSearch(e) {
+      console.log(this.value);
+      const reg = new RegExp(`${this.value}`, "gi");
+      const matchedCitites = cities.filter(place => {
+        return place.city.match(reg) || place.state.match(reg);
+      });
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+      // console.table(matchedCitites);
+      timeout = setTimeout(displayMatchedCities, delay, matchedCitites, this.value);
+    }
+
+    inputSearch.addEventListener("keyup", handleInputSearch);
+
+  </script>
 </body>
+
 </html>
