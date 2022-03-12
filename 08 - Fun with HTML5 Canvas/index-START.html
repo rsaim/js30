@@ -1,19 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>HTML5 Canvas</title>
 </head>
-<body>
-<canvas id="draw" width="800" height="800"></canvas>
-<script>
-</script>
 
-<style>
-  html, body {
-    margin: 0;
-  }
-</style>
+<body>
+  <canvas id="draw" width="200" height="200" class="canvas-board"></canvas>
+  <script>
+    const canvas = document.querySelector("#draw");
+    canvas.width = screen.width;
+    canvas.height = screen.height;
+
+    const ctx = canvas.getContext('2d');
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.globalCompositeOperation = 'saturation';
+
+    var lastX = 0;
+    var lastY = 0;
+    ctx.lineWidth = 2;
+    var isDrawing = false;
+    var direction = true;
+    var HUE = 147;
+
+    function draw(e) {
+      if (!isDrawing) {
+        // console.log("not Drawing");
+        return;
+      }
+      // console.log("Drawing");
+      ctx.beginPath();
+      ctx.moveTo(lastX, lastY);
+      ctx.lineTo(e.offsetX, e.offsetY);
+      ctx.strokeStyle = `hsl(${HUE}, 100%, 50%)`;
+      ctx.stroke();
+
+      [lastX, lastY] = [e.offsetX, e.offsetY];
+
+      if (HUE >=360) {
+        HUE = 0;
+      }
+      HUE++;
+
+      if (ctx.lineWidth >= 360 || ctx.lineWidth <= 1) {
+        direction = !direction;
+      }
+      if (direction) {
+        ctx.lineWidth++;
+      } else {
+        ctx.lineWidth--;
+      }
+
+    }
+
+    canvas.addEventListener("mousemove", draw);
+    // canvas.addEventListener("click", (e) => {
+    //   console.log(e.type);
+    //   isDrawing = true
+    // });
+    canvas.addEventListener("mousedown", (e) => {
+      console.log(e.type);
+      [lastX, lastY] = [e.offsetX, e.offsetY];
+      isDrawing = true;
+    });
+    canvas.addEventListener("mouseup", (e) => {
+      console.log(e.type);
+      isDrawing = false
+    });
+    canvas.addEventListener("mouseout", (e) => {
+      console.log(e.type);
+      isDrawing = false
+    });
+
+  </script>
+
+  <style>
+    html,
+    body {
+      margin: 0;
+    }
+
+    .canvas-board {
+      padding: 10px;
+      background-clip: content-box;
+      box-shadow: inset 0 0 0 10px #9ec1d0;
+    }
+  </style>
 
 </body>
+
 </html>
