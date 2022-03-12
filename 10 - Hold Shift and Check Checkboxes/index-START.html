@@ -96,6 +96,35 @@
   </div>
 
 <script>
+
+const allCheckBoxes = Array.from(document.querySelectorAll(".item input"));
+
+function checkBoxPressed(e) {
+  console.log(e.shiftKey);
+  if (!e.shiftKey) {
+    return;
+  }
+  if(allCheckBoxes.some(c => c.checked)) {
+    var idxStart = allCheckBoxes.findIndex((c) => c.checked && c != this);
+    console.log({idxStart});
+    if (idxStart == -1) {
+      return;
+    }
+    var idxEnd = allCheckBoxes.findIndex((c) => c == this);
+    console.log({idxEnd});
+    if (idxEnd == -1) {
+      return;
+    }
+    if (idxStart > idxEnd) {
+      [idxStart, idxEnd] = [idxEnd, idxStart];
+    }
+
+    allCheckBoxes.slice(idxStart, idxEnd + 1).forEach(c => c.checked = true);
+  }
+}
+
+allCheckBoxes.forEach(c => c.addEventListener("click", checkBoxPressed));
+
 </script>
 </body>
 </html>
