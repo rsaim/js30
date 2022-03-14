@@ -35,6 +35,36 @@
   </style>
 
 <script>
+  const hero = document.querySelector(".hero");
+  const h = document.querySelector(".hero h1");
+  const walk = 300; // 100px
+
+  function changeShadows(e) {
+    // console.log(e.target.matches(hero));
+    console.log(e.offsetX, e.offsetY);
+
+    let realOffsetX = e.offsetX;
+    let realOffsetY = e.offsetY;
+    console.log({realOffsetX, realOffsetY});
+
+    if (e.target != this) {
+      realOffsetX += this.offsetLeft;
+      realOffsetY += this.offsetRight;
+    };
+
+    let x =  (realOffsetX / hero.offsetWidth) * walk - (walk / 2);
+    let y = (realOffsetY / hero.offsetHeight) * walk - (walk / 2);
+
+    h.style.textShadow = `${x}px ${y}px 0px #ff0000,
+    ${-1 * x}px ${y}px 0px blue,
+    ${x}px ${-1 * y}px 0px yellow,
+    ${-1 * x}px ${-1 * y}px  0px green`;
+
+
+  }
+
+  hero.addEventListener("mousemove", changeShadows);
+
 </script>
 </body>
 </html>
