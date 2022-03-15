@@ -1,19 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Speech Detection</title>
 </head>
+
 <body>
 
   <div class="words" contenteditable>
   </div>
 
-<script>
-  window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  <script>
+
+    let p = document.createElement("p");
+    const words = document.querySelector(".words");
+
+    function handleResult(e) {
+      // console.log(e);
+      [...e.results].forEach(res => {
+        const isFinal = res.isFinal;
+        // console.log(res);
+        const transcript = res[0].transcript;
+        console.log(isFinal, transcript);
+        p.innerText = transcript;
+        words.appendChild(p);
+        console.log(p);
+        if (isFinal) {
+          p.classList.add("done");
+          p = document.createElement("p");
+          words.scrollTop = words.scrollHeight;
+        }
+        // Scroll to the bottommost paragraph
+        words.scrollIntoView(false);
+      });
+    }
+
+    // <div><label for="123">this is a label</label> <p id="123"> this is a para </p></div>
+
+    function displayResult(e) {
+      console.log("onend triggered");
+      recognition.start();
+    }
+
+    window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    const recognition = new SpeechRecognition();
+    recognition.interimResults = true;
+
+    recognition.addEventListener("result", handleResult);
+    recognition.addEventListener("end", displayResult);
 
 
-</script>
+    recognition.start();
+
+  </script>
 
 
   <style>
@@ -28,19 +69,25 @@
       font-size: 20px;
     }
 
+    .item {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #F1F1F1;
+    }
+
     .words {
       max-width: 500px;
       margin: 50px auto;
       background: white;
       border-radius: 5px;
-      box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
+      box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1);
       padding: 1rem 2rem 1rem 5rem;
       background: -webkit-gradient(linear, 0 0, 0 100%, from(#d9eaf3), color-stop(4%, #fff)) 0 4px;
       background-size: 100% 3rem;
       position: relative;
       line-height: 3rem;
     }
-    
+
     p {
       margin: 0 0 3rem;
     }
@@ -55,7 +102,18 @@
       border: 1px solid;
       border-color: transparent #efe4e4;
     }
+
+    p::before {
+      content: "\1F4A9"; /* 💩 */
+      content: "\1F4AC"; /* 💬 */
+      padding: 2px;
+    }
+
+    p.done::before {
+      content: "\2705"; /* ✅ */
+    }
   </style>
 
 </body>
+
 </html>
