@@ -54,6 +54,23 @@
   </div>
 
 <script>
+  const nav = document.querySelector("#main");
+  // making position:fixed makes this 0. Save it here to reset the position when scrolling up
+  const navOffsetTop = nav.offsetTop;
+
+  function fixNav(e) {
+    // console.log(e);
+    console.log(window.pageYOffset, navOffsetTop);
+    if (window.pageYOffset >= navOffsetTop) {
+      document.body.style.paddingTop = nav.offsetHeight + "px";
+      document.body.classList.add("fix-nav");
+    } else {
+      document.body.style.paddingTop = 0;
+      document.body.classList.remove("fix-nav");
+    }
+  }
+
+  window.addEventListener("scroll", fixNav);
 
 </script>
 
