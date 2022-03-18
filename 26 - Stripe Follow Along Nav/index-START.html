@@ -101,10 +101,10 @@
   }
 
   .cool > li > a {
-    color: #ffaf81;
+    color: yellow;
     text-decoration: none;
     font-size: 20px;
-    background: rgb(5 2 2 / 52%);
+    background: rgba(0,0,0,0.2);
     padding: 10px 20px;
     display: inline-block;
     margin: 20px;
@@ -186,11 +186,11 @@
     margin-right: 20px;
   }
 
-  .courses {
+  .dropdown2 {
     min-width: 300px;
   }
 
-  .courses li {
+  .dropdown2 li {
     padding: 10px 0;
     display: block;
     border-bottom: 1px solid rgba(0,0,0,0.2);
@@ -233,19 +233,22 @@
     console.log(this);
 
     const dropdown = this.querySelector(".dropdown");
-    dropdown.classList.add("add-opacity");
+    dropdown.classList.add("display-block");
 
     setTimeout(() => {
-      dropdown.classList.add("display-block");
-      const dropdownCoords = dropdown.getBoundingClientRect();
+      dropdown.classList.add("add-opacity");
+    }, 150);
+
+    const dropdownCoords = dropdown.getBoundingClientRect();
       const navCoords = nav.getBoundingClientRect();
 
-      background.classList.add("open");
-      background.style.width = dropdownCoords.width + "px";
-      background.style.height = dropdownCoords.height + "px";
-      background.style.left = dropdownCoords.left - navCoords.left + "px";
-      background.style.top = dropdownCoords.top - navCoords.top + "px";
-    }, 150);
+    background.classList.add("open");
+    background.style.width = dropdownCoords.width + "px";
+    background.style.height = dropdownCoords.height + "px";
+    // background.style.left = dropdownCoords.left - navCoords.left + "px";
+    // background.style.top = dropdownCoords.top - navCoords.top + "px";
+    // Following is a nicer way for the transform to avoid jittery feeling
+    background.style.setProperty('transform', `translate(${dropdownCoords.left - navCoords.left}px, ${dropdownCoords.top - navCoords.top}px)`);
   }
 
   function hideListItems(e) {
@@ -253,7 +256,7 @@
     console.log("LEAVE ");
     const dropdown = this.querySelector(".dropdown");
     dropdown.classList.remove("add-opacity");
-    setTimeout(() => dropdown.classList.remove("display-block"), 200);
+    dropdown.classList.remove("display-block");
     background.classList.remove("open");
   }
 
