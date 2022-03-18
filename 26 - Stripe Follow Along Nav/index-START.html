@@ -23,7 +23,7 @@
       </li>
       <li>
         <a href="#">Courses</a>
-        <ul class="dropdown courses">
+        <ul class="dropdown dropdown2">
           <li>
             <span class="code">RFB</span>
             <a href="https://ReactForBeginners.com">React For Beginners</a>
@@ -87,12 +87,8 @@
   body {
     margin: 0;
     min-height: 100vh;
-    background:
-      linear-gradient(45deg, hsla(340, 100%, 55%, 1) 0%, hsla(340, 100%, 55%, 0) 70%),
-      linear-gradient(135deg, hsla(225, 95%, 50%, 1) 10%, hsla(225, 95%, 50%, 0) 80%),
-      linear-gradient(225deg, hsla(140, 90%, 50%, 1) 10%, hsla(140, 90%, 50%, 0) 80%),
-      linear-gradient(315deg, hsla(35, 95%, 55%, 1) 100%, hsla(35, 95%, 55%, 0) 70%);
-  }
+    background: linear-gradient(45deg, hsl(62deg 100% 97%) 0%, hsla(340, 100%, 55%, 0) 70%), linear-gradient(135deg, hsl(225deg 70% 76%) 10%, hsla(225, 95%, 50%, 0) 80%), linear-gradient(225deg, hsl(140deg 68% 81%) 10%, hsla(140, 90%, 50%, 0) 80%), linear-gradient(315deg, hsla(35, 95%, 55%, 1) 100%, hsla(35, 95%, 55%, 0) 70%);
+}
 
   h2 {
     margin-top: 0;
@@ -105,15 +101,15 @@
   }
 
   .cool > li > a {
-    color: yellow;
+    color: #ffaf81;
     text-decoration: none;
     font-size: 20px;
-    background: rgba(0,0,0,0.2);
+    background: rgb(5 2 2 / 52%);
     padding: 10px 20px;
     display: inline-block;
     margin: 20px;
     border-radius: 5px;
-  }
+}
 
   nav ul {
     list-style: none;
@@ -217,9 +213,55 @@
   .button[href*=twitter] { background: #019FE9; }
   .button[href*=facebook] { background: #3B5998; }
   .button[href*=courses] { background: #ffc600; }
+
+  .dropdown.add-opacity {
+    opacity: 1;
+  }
+
+  .dropdown.display-block {
+    display: block;
+  }
 </style>
 
 <script>
+
+  const background = document.querySelector(".dropdownBackground");
+  const nav = document.querySelector(".top");
+
+  function displayListItems(e) {
+    console.log("ENTER ");
+    console.log(this);
+
+    const dropdown = this.querySelector(".dropdown");
+    dropdown.classList.add("add-opacity");
+
+    setTimeout(() => {
+      dropdown.classList.add("display-block");
+      const dropdownCoords = dropdown.getBoundingClientRect();
+      const navCoords = nav.getBoundingClientRect();
+
+      background.classList.add("open");
+      background.style.width = dropdownCoords.width + "px";
+      background.style.height = dropdownCoords.height + "px";
+      background.style.left = dropdownCoords.left - navCoords.left + "px";
+      background.style.top = dropdownCoords.top - navCoords.top + "px";
+    }, 150);
+  }
+
+  function hideListItems(e) {
+    console.log(e);
+    console.log("LEAVE ");
+    const dropdown = this.querySelector(".dropdown");
+    dropdown.classList.remove("add-opacity");
+    setTimeout(() => dropdown.classList.remove("display-block"), 200);
+    background.classList.remove("open");
+  }
+
+  const menuItems = document.querySelectorAll(".cool > li");
+  // console.log(menuItems);
+  menuItems.forEach(m => m.addEventListener("mouseenter", displayListItems));
+
+  menuItems.forEach(m => m.addEventListener("mouseleave", hideListItems));
 </script>
 
 </body>
