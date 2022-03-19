@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Whack A Mole!</title>
   <link href='https://fonts.googleapis.com/css?family=Amatic+SC:400,700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <h1>Whack-a-mole! <span class="score">0</span></h1>
@@ -32,11 +34,59 @@
     </div>
   </div>
 
-<script>
-  const holes = document.querySelectorAll('.hole');
-  const scoreBoard = document.querySelector('.score');
-  const moles = document.querySelectorAll('.mole');
+  <script>
+    const holes = document.querySelectorAll('.hole');
+    const scoreBoard = document.querySelector('.score');
+    const moles = document.querySelectorAll('.mole');
 
-</script>
+    let score = 0;
+    let lastHole;
+    let timeoutObj;
+    let timeEnd;
+    let isGameEnded = false;
+
+    function updateScore(e) {
+      console.log(this);
+      score++;
+      scoreBoard.textContent = score;
+    }
+
+    function getRandomNumber(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
+    }
+
+    function showMole() {
+      const holeNum = getRandomNumber(0, 6);
+      if (lastHole == holeNum) {
+        showMole();
+        return;
+      }
+      lastHole = holeNum;
+      holes[holeNum].classList.add("up");
+      const moleTimeout = getRandomNumber(400, 10 * 100);
+      setTimeout(() => {
+        holes[holeNum].classList.remove("up");
+        if (isGameEnded) {
+          return;
+        }
+        showMole();
+      },
+        moleTimeout);
+    }
+
+    function startGame() {
+      score = 0;
+      isGameEnded = false;
+      scoreBoard.textContent = 0;
+      showMole();
+      setTimeout(() => {
+        isGameEnded = true;
+      }, 10 * 1000);
+    }
+
+    moles.forEach(m => m.addEventListener("click", updateScore));
+
+  </script>
 </body>
+
 </html>
