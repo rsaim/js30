@@ -236,7 +236,7 @@
     dropdown.classList.add("display-block");
 
     setTimeout(() => {
-      dropdown.classList.add("add-opacity");
+      dropdown.classList.contains("display-block") && dropdown.classList.add("add-opacity");
     }, 150);
 
     const dropdownCoords = dropdown.getBoundingClientRect();
