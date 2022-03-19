@@ -47,6 +47,7 @@
 
     function updateScore(e) {
       console.log(this);
+      this.parentNode.classList.remove("up");
       score++;
       scoreBoard.textContent = score;
     }
