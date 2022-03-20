@@ -452,7 +452,7 @@ body {
 }
 
 header {
-    padding: 0 10px;
+    padding: 30px 10px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -469,7 +469,7 @@ header h1, header p, header a, header h4 {
 }
 
 header h1 {
-    margin: 2px 0;
+    margin: 15px 0;
 }
 
 header h4 {
