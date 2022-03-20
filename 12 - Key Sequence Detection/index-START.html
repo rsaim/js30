@@ -1,24 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Key Detection</title>
   <script type="text/javascript" src="https://www.cornify.com/js/cornify.js"></script>
 </head>
+
 <body>
-<script>
-  let pressed = [];
-  const secretCode = 'wesbos';
-  function handleKeyup(e) {
-    console.log(e.key);
-    pressed.push(e.key);
-    pressed = pressed.slice(-secretCode.length);
-    console.log(pressed);
-    if (pressed.join("") === secretCode) {
-      cornify_add();
+  <div class="konami">
+    <div class="code">
+      Type: saim
+    </div>
+  </div>
+  <script>
+    const code = document.querySelector(".code");
+    let pressed = [];
+    const secretCode = 'SAIMRA';
+    code.textContent = "Type: " + secretCode;
+    function handleKeyup(e) {
+      console.log(e.key);
+      pressed.push(e.key);
+      pressed = pressed.slice(-secretCode.length);
+      console.log(pressed);
+      if (pressed.join("").toLowerCase() === secretCode.toLowerCase()) {
+        cornify_add();
+      }
     }
-  }
-  window.addEventListener("keyup", handleKeyup);
-</script>
+    window.addEventListener("keyup", handleKeyup);
+  </script>
+  <style>
+    /* Ref: https://github.com/afuh/js30/blob/master/12%20-%20Key%20Sequence%20Detection/dist/main.css */
+    /*! normalize.css v7.0.0 | MIT License | github.com/necolas/normalize.css */
+
+    body {
+      display: flex;
+      flex: 1;
+      /* overflow: hidden */
+      justify-content: center;
+    }
+
+    .konami {
+      background: #f5f5f5;
+      color: #222;
+      -webkit-transform: scale(5);
+      transform: scale(5);
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center
+    }
+    .code {
+      background: #fff;
+      padding: 10px;
+      border: 2px solid #000
+    }
+  </style>
 </body>
+
 </html>

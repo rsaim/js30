@@ -4,12 +4,13 @@ function addContent() {
     var showcase = document.getElementById('showcase');
 
     return data.map(function (data) {
+        const tutNum = data.url.split(" ")[0];
         var renderHTML = `
         <div class='box'>
         <a target='_blank' href='${data.url}'>
-            <img alt='${data.title}' src='${data.img}'>
+            <img alt='${data.title}' src='${data.img}' width="800px" height="900px">
             <div class='title-grad'>
-                <span class='title'>${data.title}</span>
+                <span class='title'>${tutNum} - ${data.title}</span>
             </div>
         </a>
         </div>`;
